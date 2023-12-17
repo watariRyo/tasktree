@@ -1,0 +1,14 @@
+FROM golang:1.20.11-alpine
+
+ENV ROOT=/app
+
+WORKDIR ${ROOT}
+
+COPY ./server .
+
+RUN go install github.com/cosmtrek/air@latest
+RUN go mod download && go mod verify
+
+RUN apk add --no-cache alpine-sdk \
+    mysql-client \
+    mysql-dev

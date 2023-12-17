@@ -1,0 +1,41 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Folders
+_obj/
+_test/
+
+# Output files
+*.exe
+*.test
+*.prof
+*.out
+*.trace
+
+# Dependency directories
+vendor/
+
+# dotenv
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# go-pkgs
+*.pkg
+
+# Binary
+/bin
+
+# Coverage
+/coverage/
+
+# VS Code specific files
+.vscode/
+
+# Log files
+*.log

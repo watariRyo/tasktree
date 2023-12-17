@@ -1,0 +1,19 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  host: host.docker.internal
+  username: root
+  password: root
+
+development:
+  <<: *default
+  database: tasktree
+
+test:
+  <<: *default
+  database: tasktree_test
+
+github:
+  <<: *default
+  host: 127.0.0.1
+  database: tasktree_ci
