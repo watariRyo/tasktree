@@ -1,0 +1,89 @@
+version: "3"
+
+services:
+  db:
+    build:
+      context: ./
+      dockerfile: Dockerfile-mysql
+    image: tasktree-mysql:1.0
+    container_name: tasktree-mysql
+    volumes:
+      - ./db/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
+      - ./db/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
+      - ./db/data:/var/lib/mysql
+      - ./db/mysql:/etc/mysql/conf.d
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - balance
+  redis:
+    build:
+      context: ./
+      dockerfile: Dockerfile-redis
+    image: tasktree-redis:1.0
+    container_name: tasktree-redis
+    volumes:
+      - ./redis/data:/data
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - tasktree
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile-server
+    image: tasktree-server:1.0
+    container_name: tasktree-server
+    command: "air -c .air.toml"
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      EXEC_MODE: "docker"
+      CONFIG_FILE: "/app/config/config.yaml"
+    networks:
+      - tasktree
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - "3443:443"
+    environment:
+      STAGE: local
+      DOMAINS: "localhost -> http://host.docker.internal:4173"
+    extra_hosts:
+      - "host.docker.internal:host-backend"
+    networks:
+      - tasktree
+  keycloak:
+    build:
+      context: .
+      dockerfile: Dockerfile-keycloak
+    container_name: keycloak
+    tty: true
+    stdin_open: true
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak/data:/opt/keycloak/data
+    ports:
+      - 18080:8080
+    command:
+      - "start-dev"
+    networks:
+      - tasktree
+
+networks:
+  tasktree:
+    driver: bridge
