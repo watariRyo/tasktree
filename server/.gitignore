@@ -39,3 +39,5 @@ vendor/
 
 # Log files
 *.log
+
+firebase-secrets.server.json
