@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import authStore from "$lib/stores/auth.store";
+
+    export let data;
+
+    let isLoggedIn = false;
+    $: isLoggedIn = $authStore.isActive ? $authStore.isLoggedIn : data.isLoggedIn;
+</script>
+
+{#if isLoggedIn}
+    <h1>isLoggedIn</h1>
+{:else}
+    <h1>isLoggedOff</h1>
+{/if}
