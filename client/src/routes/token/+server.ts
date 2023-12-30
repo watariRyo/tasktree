@@ -5,6 +5,7 @@ import { auth } from '$lib/firebase/firebase.server';
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	try {
 		const { token, email } = await request.json();
+		// TOOD goのsession id発行処理に置き換え
 		const verfiedToken = await auth.verifyIdToken(token ?? '', true);
 
 		if (verfiedToken.email === email) {

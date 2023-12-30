@@ -1,0 +1,18 @@
+env: develop
+host: 0.0.0.0:8080
+server:
+  port: 8080
+  corsOrigins: "http://localhost:5173,http://localhost:8080,https://localhost:3443"
+  firebaseSecret: "firebase-secrets.server.json"
+db:
+  host: db
+  username: root
+  password: root
+  schema: tasktree
+  port: 3306
+  debugMode: true
+redis:
+  host: redis
+  port: 6379
+  password: ""
+  key: "my-investment"
