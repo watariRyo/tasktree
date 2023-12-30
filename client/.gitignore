@@ -19,3 +19,5 @@ __sapper__/
 *.njsproj
 *.sln
 *.sw?
+
+firebase-secrets.server.json
