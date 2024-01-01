@@ -15,4 +15,6 @@ redis:
   host: redis
   port: 6379
   password: ""
-  key: "my-investment"
+  key: "my-tasktree"
+jwt:
+  key: secret

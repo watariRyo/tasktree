@@ -17,7 +17,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - balance
+      - tasktree
   redis:
     build:
       context: ./
@@ -53,17 +53,30 @@ services:
       CONFIG_FILE: "/app/config/config.yaml"
     networks:
       - tasktree
-  https-portal:
-    image: steveltn/https-portal:1
-    ports:
-      - "3443:443"
-    environment:
-      STAGE: local
-      DOMAINS: "localhost -> http://host.docker.internal:4173"
-    extra_hosts:
-      - "host.docker.internal:host-backend"
-    networks:
-      - tasktree
+  # frontend:
+  # SegmentationFaultが発生するためhttps化と合わせてコメントアウト
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile-frontend
+  #   image: frontend:1.0
+  #   container_name: svelte-front
+  #   expose:
+  #     - "5173"
+  #   ports:
+  #     - "5173:5173"
+  #   networks:
+  #     - tasktree
+  # https-portal:
+  #   image: steveltn/https-portal:1
+  #   ports:
+  #     - "3443:443"
+  #   depends_on:
+  #     - frontend
+  #   environment:
+  #     STAGE: local
+  #     DOMAINS: "test.com -> http://host.docker.internal:5173"
+  #   networks:
+  #     - tasktree
 
 networks:
   tasktree:
