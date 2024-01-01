@@ -14,6 +14,7 @@ type (
 		Db     Db     `yaml:"db"`
 		Server Server `yaml:"server"`
 		Redis  Redis  `yaml:"redis"`
+		Jwt    Jwt    `yaml:"jwt"`
 	}
 
 	Db struct {
@@ -33,9 +34,13 @@ type (
 	}
 
 	Server struct {
-		Port        string `yaml:"port"`
-		CorsOrigins string `yaml:"corsOrigins"`
+		Port           string `yaml:"port"`
+		CorsOrigins    string `yaml:"corsOrigins"`
 		FirebaseSecret string `yaml:"firebaseSecret"`
+	}
+
+	Jwt struct {
+		Key string `yaml:"key"`
 	}
 )
 
