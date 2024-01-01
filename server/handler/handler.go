@@ -10,7 +10,7 @@ type HandlerImpl struct {
 }
 
 type Handler interface {
-	TestMethod(c echo.Context) error
+	Logout(c echo.Context) error
 }
 
 var _ Handler = (*HandlerImpl)(nil)

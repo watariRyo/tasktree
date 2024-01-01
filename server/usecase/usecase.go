@@ -13,7 +13,7 @@ type UseCaseImpl struct {
 }
 
 type UseCase interface {
-	TestMethod() string
+	Logout() error
 }
 
 var _ UseCase = (*UseCaseImpl)(nil)

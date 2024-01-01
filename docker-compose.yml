@@ -40,9 +40,9 @@ services:
     container_name: tasktree-server
     command: "air -c .air.toml"
     expose:
-      - "8000"
+      - "8080"
     ports:
-      - "8000:8000"
+      - "8080:8080"
     volumes:
       - ./server:/app
     depends_on:

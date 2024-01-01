@@ -19,10 +19,6 @@ func (server *Server) setFirebase() {
 
 	server.e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			if err := next(c); err != nil {
-				c.Error(err)
-			}
-
 			// クライアントから送られてきた JWT 取得
 			authHeader := c.Request().Header.Get("Authorization")
 			idToken := strings.Replace(authHeader, "Bearer ", "", 1)
@@ -33,7 +29,7 @@ func (server *Server) setFirebase() {
 				fmt.Printf("error verifying ID token: %v\n", err)
 				return &echo.HTTPError{
 					Code:    http.StatusUnauthorized,
-					Message: "error verifying ID token\n",
+					Message: "error verifying ID token",
 				}
 			}
 

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
 	"github.com/watariRyo/tasktree/server/config"
 	"github.com/watariRyo/tasktree/server/domain/repository"
 	"github.com/watariRyo/tasktree/server/handler"
 	"github.com/watariRyo/tasktree/server/infra/db"
 	"github.com/watariRyo/tasktree/server/infra/redis"
+	"github.com/watariRyo/tasktree/server/server"
 	"github.com/watariRyo/tasktree/server/usecase"
 )
 
@@ -45,7 +45,6 @@ func main() {
 	usecase := usecase.NewUseCase(allRepository, cfg)
 	handler := handler.NewHandler(usecase)
 
-	e := echo.New()
-	e.GET("/test", handler.TestMethod)
-	e.Logger.Fatal(e.Start(":" + cfg.Server.Port))
+	server := server.NewServer(cfg, handler)
+	server.Run()
 }
