@@ -11,20 +11,19 @@ import (
 )
 
 func (server *Server) setFirebase() {
+	ctx := context.Background()
+	firebaseApp, err := firebase.InitFirebaseApp(ctx, server.cfg.Server)
+	if err != nil {
+		panic(err)
+	}
+
 	server.e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
 				c.Error(err)
 			}
 
-			ctx := context.Background()
-			firebaseApp, err := firebase.InitFirebaseApp(ctx, server.cfg.Server)
-			if err != nil {
-				panic(err)
-			}
-
 			// クライアントから送られてきた JWT 取得
-			// authHeader := c.Header.Get("Authorization")
 			authHeader := c.Request().Header.Get("Authorization")
 			idToken := strings.Replace(authHeader, "Bearer ", "", 1)
 
