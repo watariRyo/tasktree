@@ -2,6 +2,9 @@ package firebase
 
 import (
 	"context"
+	"fmt"
+	"io/ioutil"
+	"os"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
@@ -14,7 +17,20 @@ type firebaseApp struct {
 }
 
 func InitFirebaseApp(ctx context.Context, cfg config.Server) (*firebaseApp, error) {
-	app, err := firebase.NewApp(ctx, nil, option.WithCredentialsJSON([]byte(cfg.FirebaseSecret)))
+	jsonFile, err := os.Open(cfg.FirebaseSecret)
+	if err != nil {
+		fmt.Println("Could not open JSON file.", err)
+		return nil, err
+	}
+	defer jsonFile.Close()
+
+	jsonData, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		fmt.Println("Could not read JSON data.", err)
+		return nil, err
+	}
+
+	app, err := firebase.NewApp(ctx, nil, option.WithCredentialsJSON(jsonData))
 	if err != nil {
 		return nil, err
 	}
@@ -24,11 +40,12 @@ func InitFirebaseApp(ctx context.Context, cfg config.Server) (*firebaseApp, erro
 func (app *firebaseApp) VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
 	client, err := app.Auth(ctx)
 	if err != nil {
-		// エラー処理
+		return nil, err
 	}
 	token, err := client.VerifyIDToken(ctx, idToken)
+
 	if err != nil {
-		// エラー処理
+		return nil, err
 	}
 	return token, nil
 }

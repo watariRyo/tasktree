@@ -39,10 +39,9 @@ func (server *Server) setRouting() {
 	// セッション
 	server.e.Use(session.Middleware(sessions.NewCookieStore([]byte(server.cfg.Jwt.Key))))
 
-	// ルート（認証不要）
-	// server.e.POST("/echo/signUp", server.signUpHandler.SignUp)
+	server.e.GET("/api/v1/logout", server.handler.Logout)
 
-	// ルート（認証必要）
+	// SignUp / LoginをFirebaseで行うので全て認証必要
 	// r := server.e.Group("/echo/api")
 
 	// ルート（認証必要（/api/**））
