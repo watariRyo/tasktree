@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { loginWithGoogle } from '$lib/firebase/auth.client';
 	import { afterLogin, afterRegist } from '$lib/helpers/route.helper';
+	import messagesStore from '$lib/stores/messages.store';
 
 	export let isSignup: boolean;
 
@@ -13,11 +14,12 @@
 			} else {
 				await afterLogin($page.url, user.uid);
 			}
+			messagesStore.hide()
 		} catch (e: any) {
 			if (e.code === 'auth/popup-closed-by-user') {
 				return;
 			}
-			console.log(e);
+			messagesStore.showError()
 		}
 	};
 </script>

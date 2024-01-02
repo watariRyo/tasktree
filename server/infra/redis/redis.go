@@ -21,6 +21,7 @@ func NewRedisClient(cfg *config.Redis) (*RedisClient, error) {
 		&redis.Options{
 			Addr:     cfg.Host + ":" + cfg.Port,
 			Password: cfg.Password,
+			DB:       0,
 		},
 	)
 	_, err := client.Ping().Result()

@@ -45,7 +45,7 @@ export const sendJWTToken = async () => {
 		return;
 	}
 
-	const token = await user.getIdToken();
+	const token = await user.getIdToken(true);
 	await fetch('/token', {
 		method: 'POST',
 		body: JSON.stringify({

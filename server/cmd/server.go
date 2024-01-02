@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+
 	"github.com/watariRyo/tasktree/server/config"
 	"github.com/watariRyo/tasktree/server/domain/repository"
 	"github.com/watariRyo/tasktree/server/handler"
 	"github.com/watariRyo/tasktree/server/infra/db"
+	"github.com/watariRyo/tasktree/server/infra/firebase"
 	"github.com/watariRyo/tasktree/server/infra/redis"
 	"github.com/watariRyo/tasktree/server/server"
 	"github.com/watariRyo/tasktree/server/usecase"
@@ -36,15 +39,19 @@ func main() {
 		panic(err)
 	}
 
+	ctx := context.Background()
+	firebaseApp, err := firebase.InitFirebaseApp(ctx, cfg.Server)
+
 	allRepository := &repository.AllRepository{
 		DBConnection:  conn,
 		DBTransaction: db.Transaction,
 		RedisClient:   redisClient,
+		FirebaseApp:   firebaseApp,
 	}
 
 	usecase := usecase.NewUseCase(allRepository, cfg)
 	handler := handler.NewHandler(usecase)
 
-	server := server.NewServer(cfg, handler)
+	server := server.NewServer(ctx, cfg, handler, allRepository)
 	server.Run()
 }

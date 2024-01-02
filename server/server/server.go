@@ -1,24 +1,31 @@
 package server
 
 import (
+	"context"
+
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/watariRyo/tasktree/server/config"
+	"github.com/watariRyo/tasktree/server/domain/repository"
 	"github.com/watariRyo/tasktree/server/handler"
 )
 
 type Server struct {
 	e       *echo.Echo
+	ctx     context.Context
 	cfg     *config.Config
+	repo    *repository.AllRepository
 	handler *handler.HandlerImpl
 }
 
-func NewServer(cfg *config.Config, handler *handler.HandlerImpl) *Server {
+func NewServer(ctx context.Context, cfg *config.Config, handler *handler.HandlerImpl, repo *repository.AllRepository) *Server {
 	server := &Server{
 		echo.New(),
+		ctx,
 		cfg,
+		repo,
 		handler,
 	}
 

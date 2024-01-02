@@ -47,5 +47,6 @@ func (app *firebaseApp) VerifyIDToken(ctx context.Context, idToken string) (*aut
 	if err != nil {
 		return nil, err
 	}
+
 	return token, nil
 }
