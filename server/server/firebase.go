@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"firebase.google.com/go/auth"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/watariRyo/tasktree/server/domain/model"
@@ -36,19 +37,14 @@ func (server *Server) setFirebase() {
 			}
 
 			// セッション発行
-			_, err = c.Cookie("ssid")
+			ssidCookie, err := c.Cookie("ssid")
 			if err != nil {
 				ssid := uuid.NewString()
-				duration := decodeToken.Expires - time.Now().Unix()
-				err = server.repo.RedisClient.SaveSession(ssid, model.SessionData{
-					UserID:    decodeToken.UID,
-					IDToken:   idToken,
-					ExpiredAt: decodeToken.Expires,
-				}, time.Duration(duration)*time.Second)
+				duration, err := server.setRedisSession(ssid, idToken, decodeToken)
 				if err != nil {
 					return &echo.HTTPError{
-						Code:    http.StatusUnauthorized,
-						Message: "could not get session data.",
+						Code:    http.StatusInternalServerError,
+						Message: "could not set session data.",
 					}
 				}
 
@@ -60,9 +56,41 @@ func (server *Server) setFirebase() {
 				}
 
 				c.SetCookie(cookie)
+			} else {
+				ssid := ssidCookie.Value
+				sessionData, err := server.repo.RedisClient.GetSession(ssid)
+				if err != nil {
+					return &echo.HTTPError{
+						Code:    http.StatusUnauthorized,
+						Message: "could not get session data.",
+					}
+				}
+				// idTokenが更新されていた場合、セッションデータを更新
+				if sessionData.IDToken != idToken {
+					_, err = server.setRedisSession(ssid, idToken, decodeToken)
+					if err != nil {
+						return &echo.HTTPError{
+							Code:    http.StatusInternalServerError,
+							Message: "could not set session data.",
+						}
+					}
+				}
 			}
 
 			return next(c)
 		}
 	})
+}
+
+func (server *Server) setRedisSession(ssid string, idToken string, decodeToken *auth.Token) (int64, error) {
+	duration := decodeToken.Expires - time.Now().Unix()
+	err := server.repo.RedisClient.SaveSession(ssid, model.SessionData{
+		UserID:    decodeToken.UID,
+		IDToken:   idToken,
+		ExpiredAt: decodeToken.Expires,
+	}, time.Duration(duration)*time.Second)
+	if err != nil {
+		return 0, err
+	}
+	return duration, nil
 }

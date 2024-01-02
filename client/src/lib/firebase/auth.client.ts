@@ -45,11 +45,12 @@ export const sendJWTToken = async () => {
 		return;
 	}
 
-	const token = await user.getIdToken(true);
+	const token = await user.getIdToken();
 	await fetch('/token', {
 		method: 'POST',
 		body: JSON.stringify({
 			token: token,
+			refreshToken: user.refreshToken,
 			email: user.email
 		})
 	});
