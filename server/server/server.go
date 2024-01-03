@@ -48,6 +48,8 @@ func (server *Server) setRouting() {
 
 	server.e.GET("/api/v1/logout", server.handler.Logout)
 
+	server.e.HTTPErrorHandler = handler.APIErrorHandler
+
 	// SignUp / LoginをFirebaseで行うので全て認証必要
 	// r := server.e.Group("/echo/api")
 

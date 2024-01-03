@@ -6,6 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/watariRyo/tasktree/server/errors"
 )
 
 func (server *Server) setCors() {
@@ -45,9 +46,9 @@ func (server *Server) setCors() {
 				}
 			}
 			// 一致しない場合は403
-			return &echo.HTTPError{
-				Code:    http.StatusForbidden,
-				Message: "cors forbidden",
+			return &errors.APIError{
+				Status:  http.StatusUnauthorized,
+				Message: "Cors error",
 			}
 		}
 	})
