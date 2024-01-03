@@ -10,9 +10,9 @@
 		try {
 			const user = await loginWithGoogle();
 			if (isSignup) {
-				await afterRegist($page.url, user.uid);
+				await afterRegist($page.url);
 			} else {
-				await afterLogin($page.url, user.uid);
+				await afterLogin($page.url);
 			}
 			messagesStore.hide()
 		} catch (e: any) {

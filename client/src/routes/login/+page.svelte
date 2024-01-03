@@ -17,7 +17,7 @@
 			}
 			const user = await loginWithEmailAndPassowrd(email, password);
             messagesStore.hide()
-			await afterLogin($page.url, user.uid);
+			await afterLogin($page.url);
 		} catch (error: any) {
 			// console.log(error);
             messagesStore.showError();

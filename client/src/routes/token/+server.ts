@@ -1,7 +1,7 @@
 import { json, type Cookies, type RequestHandler } from '@sveltejs/kit';
 import { auth } from '$lib/firebase/firebase.server';
 import { PUBLIC_API_KEY } from '$env/static/public';
-import { GrantType } from '$lib/const/grant.type';
+import { GrantType } from '../../models/grant.type';
 
 const TOKEN_EXPIRED = 'auth/id-token-expired';
 
@@ -22,6 +22,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 				if (error.code === TOKEN_EXPIRED) {
 					const res = await sendRefreshToken(cookies, refreshToken, email);
 					return res;
+					// return json({ message: 'Access denied', code: 'hoge' }, { status: 403 });
 				} else {
 					return json({ message: 'Access denied' }, { status: 403 });
 				}
