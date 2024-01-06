@@ -29,12 +29,12 @@ jobs:
       - name: Test
         run: |
           cd ./server
-          go test ./cmd/* -cover -race -tags="" -coverprofile=""
-          go test ./config/* -cover -race -tags="" -coverprofile=""
+          go test ./cmd* -cover -race -tags="" -coverprofile=""
+          go test ./config* -cover -race -tags="" -coverprofile=""
           go test ./domain/* -cover -race -tags="" -coverprofile=""
-          go test ./errors/* -cover -race -tags="" -coverprofile=""
-          go test ./handler/* -cover -race -tags="" -coverprofile=""
+          go test ./errors* -cover -race -tags="" -coverprofile=""
+          go test ./handler* -cover -race -tags="" -coverprofile=""
           go test ./infra/* -cover -race -tags="" -coverprofile=""
-          go test ./server/* -cover -race -tags="" -coverprofile=""
-          go test ./time/* -cover -race -tags="" -coverprofile=""
-          go test ./usecase/* -cover -race -tags="" -coverprofile=""
+          go test ./server* -cover -race -tags="" -coverprofile=""
+          go test ./time* -cover -race -tags="" -coverprofile=""
+          go test ./usecase* -cover -race -tags="" -coverprofile=""
