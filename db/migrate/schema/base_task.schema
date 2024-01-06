@@ -1,0 +1,9 @@
+create_table "base_task", primary_key: "id", id: {type: :bigint, comment:"ID"}, charset: "utf8mb4", collation: "utf8mb4_general_ci", comment: "ベースタスク", force: :cascade do |t|
+  t.integer "user_id", null: false, comment: "ユーザーID"
+  t.string "title", limit: 255, null: true, comment: "タイトル"
+  t.text "content", null: true, comment: "内容"
+  t.integer "day_of_week_id", null: false, comment: "曜日"
+  t.datetime "created_at", null: false, comment: "作成日時"
+  t.datetime "updated_at", null: false, comment: "更新日時"
+  t.index ["user_id"], name: "idx_base_task_user_id"
+end

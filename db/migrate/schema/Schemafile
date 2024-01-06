@@ -1,0 +1,6 @@
+require 'user.schema'
+require 'day_of_week.schema'
+require 'base_task.schema'
+require 'scheduled_task.schema'
+require 'share_task.schema'
+require 'foreign_keys.schema'
