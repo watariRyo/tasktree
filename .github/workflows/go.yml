@@ -20,38 +20,22 @@ jobs:
         with:
           go-version: "1.20"
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
-        with:
-          ruby-version: "3.0"
-
       - name: Build
         run: |
           cd ./server
           make build-production-linux
 
-      - name: Test Container Up
-        run: docker compose up -d
-
-      - name: "Install ridgepole"
-        run: |
-          sudo gem install ridgepole
-          sudo gem install mysql2
-
-      - name: "Install mysql"
-        run: |
-          sudo apt update
-          sudo apt-get install mysql-client-core-8.0
-          mysqldump -uroot -proot -h 127.0.0.1 -B tasktree_test > hoge.sql
-
-      - name: "Exec ridgepole"
-        run: |
-          cd db/migrate
-          ridgepole -c 'mysql2://root:root@127.0.0.1:3306/tasktree_test' -f ./schema/Schemafile
-
+      # GithubActions側でDBに繋げず（ridgepoleもの接続もできず）modelsのtest以外を実行
       - name: Test
         run: |
           EXPORT DB_HOST=127.0.0.1
           cd ./server
-          cp sqlboiler_local.toml sqlboiler.toml
-          go test ./... -cover -race -tags="" -coverprofile=""
+          go test ./cmd/* -cover -race -tags="" -coverprofile=""
+          go test ./config/* -cover -race -tags="" -coverprofile=""
+          go test ./domain/* -cover -race -tags="" -coverprofile=""
+          go test ./errors/* -cover -race -tags="" -coverprofile=""
+          go test ./handler/* -cover -race -tags="" -coverprofile=""
+          go test ./infra/* -cover -race -tags="" -coverprofile=""
+          go test ./server/* -cover -race -tags="" -coverprofile=""
+          go test ./time/* -cover -race -tags="" -coverprofile=""
+          go test ./usecase/* -cover -race -tags="" -coverprofile=""
