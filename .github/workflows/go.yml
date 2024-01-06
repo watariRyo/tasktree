@@ -42,7 +42,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install mysql-client-core-8.0
-          mysqldump -uroot -proot -h 127.0.0.1-B tasktree_test > hoge.sql
+          mysqldump -uroot -proot -h 127.0.0.1 -B tasktree_test > hoge.sql
 
       - name: "Exec ridgepole"
         run: |
