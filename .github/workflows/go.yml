@@ -1,0 +1,40 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: ["main", "integration"]
+  pull_request:
+    branches: ["main", "integration"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+
+      - name: Build
+        run: |
+          cd ./server
+          make build-production-linux
+
+      # GithubActions側でDBに繋げず（ridgepoleもの接続もできず）modelsのtest以外を実行
+      - name: Test
+        run: |
+          cd ./server
+          go test ./cmd* -cover -race -tags="" -coverprofile=""
+          go test ./config* -cover -race -tags="" -coverprofile=""
+          go test ./domain/* -cover -race -tags="" -coverprofile=""
+          go test ./errors* -cover -race -tags="" -coverprofile=""
+          go test ./handler* -cover -race -tags="" -coverprofile=""
+          go test ./infra/* -cover -race -tags="" -coverprofile=""
+          go test ./server* -cover -race -tags="" -coverprofile=""
+          go test ./time* -cover -race -tags="" -coverprofile=""
+          go test ./usecase* -cover -race -tags="" -coverprofile=""
