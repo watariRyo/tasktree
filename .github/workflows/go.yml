@@ -28,7 +28,6 @@ jobs:
       # GithubActions側でDBに繋げず（ridgepoleもの接続もできず）modelsのtest以外を実行
       - name: Test
         run: |
-          EXPORT DB_HOST=127.0.0.1
           cd ./server
           go test ./cmd/* -cover -race -tags="" -coverprofile=""
           go test ./config/* -cover -race -tags="" -coverprofile=""
