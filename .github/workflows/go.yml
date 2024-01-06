@@ -47,7 +47,7 @@ jobs:
       - name: "Exec ridgepole"
         run: |
           cd db/migrate
-          ridgepole --apply -c config.yml -f ./schema/Schemafile -E test
+          ridgepole -c 'mysql2://root:root@127.0.0.1:3306/tasktree_test' -f ./schema/Schemafile
 
       - name: Test
         run: |
