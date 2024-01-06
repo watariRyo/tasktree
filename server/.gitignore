@@ -41,3 +41,5 @@ vendor/
 *.log
 
 firebase-secrets.server.json
+
+tmp/main

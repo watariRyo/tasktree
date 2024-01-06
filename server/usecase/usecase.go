@@ -13,7 +13,7 @@ type UseCaseImpl struct {
 }
 
 type UseCase interface {
-	Logout() error
+	Logout(ssid string) error
 }
 
 var _ UseCase = (*UseCaseImpl)(nil)
