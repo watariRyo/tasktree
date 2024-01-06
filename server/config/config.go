@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -47,7 +49,8 @@ type (
 func Load() (*Config, error) {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/app/config/")
+	projectRoot := projectRoot()
+	viper.AddConfigPath(fmt.Sprintf("/%s/config/", projectRoot))
 
 	// 環境変数が指定されていればそちらを優先
 	viper.AutomaticEnv()
@@ -67,4 +70,26 @@ func Load() (*Config, error) {
 	}
 
 	return &cfg, nil
+}
+
+func projectRoot() string {
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+
+	for {
+		_, err := os.ReadFile(filepath.Join(currentDir, "go.mod"))
+		if os.IsNotExist(err) {
+			if currentDir == filepath.Dir(currentDir) {
+				return ""
+			}
+			currentDir = filepath.Dir(currentDir)
+			continue
+		} else if err != nil {
+			return ""
+		}
+		break
+	}
+	return currentDir
 }

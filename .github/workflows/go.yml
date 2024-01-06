@@ -5,28 +5,53 @@ name: Go
 
 on:
   push:
-    branches: [ "main", "integration" ]
+    branches: ["main", "integration"]
   pull_request:
-    branches: [ "main", "integration" ]
+    branches: ["main", "integration"]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
 
-    - name: Build
-      run: |
-        cd ./server
-        go build -o ./build/${BIN_NAME} -tags '$(BUILD_TAGS) go' -installsuffix go -ldflags '-s -w' ./cmd/server.go CGO_ENABLED=0 GOOS=linux GOARCH=amd64 BIN_NAME=prod
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+        with:
+          ruby-version: "3.0"
 
-    - name: Test
-      run: |
-        cd ./server
-        go test ./...
+      - name: Build
+        run: |
+          cd ./server
+          make build-production-linux
+
+      - name: Test Container Up
+        run: docker compose up -d
+
+      - name: "Install ridgepole"
+        run: |
+          sudo gem install ridgepole
+          sudo gem install mysql2
+
+      - name: "Install mysql"
+        run: |
+          sudo apt update
+          sudo apt-get install mysql-client-core-8.0
+          mysqldump -uroot -proot -h 127.0.0.1-B tasktree_test > hoge.sql
+
+      - name: "Exec ridgepole"
+        run: |
+          cd db/migrate
+          ridgepole --apply -c config.yml -f ./schema/Schemafile -E test
+
+      - name: Test
+        run: |
+          EXPORT DB_HOST=127.0.0.1
+          cd ./server
+          cp sqlboiler_local.toml sqlboiler.toml
+          go test ./... -cover -race -tags="" -coverprofile=""
