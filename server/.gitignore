@@ -43,3 +43,4 @@ vendor/
 firebase-secrets.server.json
 
 tmp/main
+build

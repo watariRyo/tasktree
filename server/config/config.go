@@ -77,7 +77,6 @@ func projectRoot() string {
 	if err != nil {
 		return ""
 	}
-
 	for {
 		_, err := os.ReadFile(filepath.Join(currentDir, "go.mod"))
 		if os.IsNotExist(err) {
