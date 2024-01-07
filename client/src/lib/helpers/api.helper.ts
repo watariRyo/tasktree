@@ -7,7 +7,7 @@ export const client = async <T>(endPoint: RequestInfo, config?: RequestInit): Pr
 
 	const response = await fetch(endPoint, {
 		mode: 'cors',
-		credentials: 'include',
+		credentials: 'include', // サイトを跨ぐCookieの保持に必須
 		...config,
 		headers: {
 			...headers,

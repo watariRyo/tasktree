@@ -11,9 +11,9 @@ func (h *HandlerImpl) Logout(c echo.Context) error {
 	// セッションがない場合も正常で返す
 	ssidCookie, err := c.Cookie("ssid")
 	if err != nil {
-		// セッションがなくても
-		return c.JSON(http.StatusNoContent, nil)
+		return c.JSON(http.StatusOK, nil)
 	}
+	_ = h.usecase.Logout(ssidCookie.Value)
 
-	return c.JSON(http.StatusNoContent, h.usecase.Logout(ssidCookie.Value))
+	return c.JSON(http.StatusOK, "")
 }
