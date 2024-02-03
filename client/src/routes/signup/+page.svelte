@@ -22,7 +22,7 @@
 			}
 			const user = await registerWithEmailAndPassword(email, password);
             messagesStore.hide()
-			await afterRegist($page.url, user.uid);
+			await afterRegist($page.url);
 		} catch (error: any) {
 			if (error.code === 'auth/email-already-in-use') {
                 messagesStore.showError('You have already registered, please log in.');
