@@ -15,13 +15,17 @@ func APIErrorHandler(err error, c echo.Context) {
 		msg    string
 	)
 
-	if he, ok := err.(*errors.APIError); ok {
-		status = he.Status
-		code = he.Code
-		msg = he.Message
+	if ae, ok := err.(*errors.APIError); ok {
+		status = ae.Status
+		code = ae.Code
+		msg = ae.Message
 		if msg == "" {
 			msg = http.StatusText(status)
 		}
+	} else if he, ok := err.(*echo.HTTPError); ok {
+		status = he.Code
+		code = ""
+		msg = he.Message.(string)
 	} else {
 		msg = http.StatusText(status)
 	}
