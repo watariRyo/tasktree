@@ -22,7 +22,7 @@
 	};
 </script>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="/">TaskTree</a>
 		<button
@@ -49,13 +49,18 @@
 						>
 					</li>
 					<li class="nav-item">
-						<a class:active={$page.url.pathname === '/profile'} class="nav-link" href="/profile"
-							>Profile</a
+						<a class:active={$page.url.pathname === '/about'} class="nav-link" href="/about"
+							>About</a
 						>
 					</li>
 					<li class="nav-item">
-						<a class:active={$page.url.pathname === '/about'} class="nav-link" href="/about"
-							>About</a
+						<a class:active={$page.url.pathname === '/base-task'} class="nav-link" href="/base-task"
+							>Base Task</a
+						>
+					</li>
+					<li class="nav-item">
+						<a class:active={$page.url.pathname === '/account'} class="nav-link" href="/account"
+							>Account</a
 						>
 					</li>
 					<li class="nav-item">
