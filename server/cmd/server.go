@@ -43,10 +43,11 @@ func main() {
 	firebaseApp, err := firebase.InitFirebaseApp(ctx, cfg.Server)
 
 	allRepository := &repository.AllRepository{
-		DBConnection:  conn,
-		DBTransaction: db.Transaction,
-		RedisClient:   redisClient,
-		FirebaseApp:   firebaseApp,
+		DBConnection:       conn,
+		DBTransaction:      db.Transaction,
+		RedisClient:        redisClient,
+		FirebaseApp:        firebaseApp,
+		BaseTaskRepository: db.NewBaseTaskRepository(),
 	}
 
 	usecase := usecase.NewUseCase(allRepository, cfg)

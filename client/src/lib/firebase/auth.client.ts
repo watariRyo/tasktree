@@ -1,4 +1,3 @@
-import { client } from '$lib/helpers/api.helper';
 import {
 	createUserWithEmailAndPassword,
 	getAuth,
@@ -10,7 +9,6 @@ import {
 	type User
 } from 'firebase/auth';
 import { ApiError } from '../../models/api.error';
-import { PUBLIC_BACKEND_FQDN } from '$env/static/public';
 
 export const loginWithGoogle = async (): Promise<User> => {
 	const auth = getAuth();
@@ -20,13 +18,6 @@ export const loginWithGoogle = async (): Promise<User> => {
 
 export const logout = async () => {
 	await signOut(getAuth());
-
-	await client(`${PUBLIC_BACKEND_FQDN}/api/v1/logout`, {
-		method: 'GET',
-		headers: {
-			Origin: location.origin
-		}
-	});
 	await fetch('/logout');
 };
 
@@ -56,7 +47,7 @@ export const sendJWTToken = async () => {
 	}
 
 	const token = await user.getIdToken();
-	await client('/token', {
+	await fetch('/token', {
 		method: 'POST',
 		body: JSON.stringify({
 			token: token,
