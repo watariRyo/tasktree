@@ -14,6 +14,7 @@
 	const onLogout = async () => {
 		try {
             await logout()
+			console.log("goto")
             goto('/')
 		} catch (e) {
 			// console.log(e);

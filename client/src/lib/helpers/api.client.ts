@@ -1,25 +1,26 @@
 import { ApiError, type ErrorResponseSchema } from '../../models/api.error';
 
-export const client = async <T>(endPoint: RequestInfo, config?: RequestInit): Promise<T> => {
-	const headers = {
-		'content-type': 'application/json'
-	};
+export const responseAnalysis = async <T>(response: Response): Promise<T> => {
+	// const headers = {
+	// 	'content-type': 'application/json'
+	// };
 
-	const response = await fetch(endPoint, {
-		mode: 'cors',
-		credentials: 'include', // サイトを跨ぐCookieの保持に必須
-		...config,
-		headers: {
-			...headers,
-			...config?.headers
-		}
-	}).catch(() => {
-		return Promise.reject();
-	});
+	// const response = await fetch(endPoint, {
+	// 	mode: 'cors',
+	// 	credentials: 'include', // サイトを跨ぐCookieの保持に必須
+	// 	...config,
+	// 	headers: {
+	// 		...headers,
+	// 		...config?.headers
+	// 	}
+	// }).catch(() => {
+	// 	return Promise.reject();
+	// });
 
 	const contentType = response.headers.get('Content-Type') || '';
 
 	if (!response.ok) {
+		console.log('ng');
 		const serverErrorContent = isJson(contentType)
 			? ((await response.json()) as ErrorResponseSchema)
 			: undefined;

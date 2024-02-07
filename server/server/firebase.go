@@ -99,6 +99,8 @@ func (server *Server) setFirebase() {
 
 func (server *Server) setRedisSession(ssid string, idToken string, decodeToken *auth.Token) (int64, error) {
 	duration := decodeToken.Expires - time.Now().Unix()
+	// TODO: UserIDをDBの主キーに変更
+	// TODO: UserIDで取れない場合は登録
 	err := server.repo.RedisClient.SaveSession(ssid, model.SessionData{
 		UserID:    decodeToken.UID,
 		IDToken:   idToken,
