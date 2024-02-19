@@ -1,7 +1,7 @@
 package model
 
 type SessionData struct {
-	UserID    string
+	UserID    int
 	IDToken   string
 	ExpiredAt int64
 }

@@ -13,31 +13,31 @@ import (
 	repository "github.com/watariRyo/tasktree/server/domain/repository"
 )
 
-// MockBaseTaskRepository is a mock of BaseTaskRepository interface.
-type MockBaseTaskRepository struct {
+// MockBaseTasksRepository is a mock of BaseTasksRepository interface.
+type MockBaseTasksRepository struct {
 	ctrl     *gomock.Controller
-	recorder *MockBaseTaskRepositoryMockRecorder
+	recorder *MockBaseTasksRepositoryMockRecorder
 }
 
-// MockBaseTaskRepositoryMockRecorder is the mock recorder for MockBaseTaskRepository.
-type MockBaseTaskRepositoryMockRecorder struct {
-	mock *MockBaseTaskRepository
+// MockBaseTasksRepositoryMockRecorder is the mock recorder for MockBaseTasksRepository.
+type MockBaseTasksRepositoryMockRecorder struct {
+	mock *MockBaseTasksRepository
 }
 
-// NewMockBaseTaskRepository creates a new mock instance.
-func NewMockBaseTaskRepository(ctrl *gomock.Controller) *MockBaseTaskRepository {
-	mock := &MockBaseTaskRepository{ctrl: ctrl}
-	mock.recorder = &MockBaseTaskRepositoryMockRecorder{mock}
+// NewMockBaseTasksRepository creates a new mock instance.
+func NewMockBaseTasksRepository(ctrl *gomock.Controller) *MockBaseTasksRepository {
+	mock := &MockBaseTasksRepository{ctrl: ctrl}
+	mock.recorder = &MockBaseTasksRepositoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockBaseTaskRepository) EXPECT() *MockBaseTaskRepositoryMockRecorder {
+func (m *MockBaseTasksRepository) EXPECT() *MockBaseTasksRepositoryMockRecorder {
 	return m.recorder
 }
 
 // GetBaseTaskByUserID mocks base method.
-func (m *MockBaseTaskRepository) GetBaseTaskByUserID(ctx context.Context, conn repository.DBConnection, userID string) (*model.BaseTask, error) {
+func (m *MockBaseTasksRepository) GetBaseTaskByUserID(ctx context.Context, conn repository.DBConnection, userID int) (*model.BaseTask, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBaseTaskByUserID", ctx, conn, userID)
 	ret0, _ := ret[0].(*model.BaseTask)
@@ -46,13 +46,13 @@ func (m *MockBaseTaskRepository) GetBaseTaskByUserID(ctx context.Context, conn r
 }
 
 // GetBaseTaskByUserID indicates an expected call of GetBaseTaskByUserID.
-func (mr *MockBaseTaskRepositoryMockRecorder) GetBaseTaskByUserID(ctx, conn, userID interface{}) *gomock.Call {
+func (mr *MockBaseTasksRepositoryMockRecorder) GetBaseTaskByUserID(ctx, conn, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBaseTaskByUserID", reflect.TypeOf((*MockBaseTaskRepository)(nil).GetBaseTaskByUserID), ctx, conn, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBaseTaskByUserID", reflect.TypeOf((*MockBaseTasksRepository)(nil).GetBaseTaskByUserID), ctx, conn, userID)
 }
 
 // Insert mocks base method.
-func (m *MockBaseTaskRepository) Insert(ctx context.Context, conn repository.DBConnection, input *model.BaseTask) (*model.BaseTask, error) {
+func (m *MockBaseTasksRepository) Insert(ctx context.Context, conn repository.DBConnection, input *model.BaseTask) (*model.BaseTask, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Insert", ctx, conn, input)
 	ret0, _ := ret[0].(*model.BaseTask)
@@ -61,7 +61,7 @@ func (m *MockBaseTaskRepository) Insert(ctx context.Context, conn repository.DBC
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockBaseTaskRepositoryMockRecorder) Insert(ctx, conn, input interface{}) *gomock.Call {
+func (mr *MockBaseTasksRepositoryMockRecorder) Insert(ctx, conn, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockBaseTaskRepository)(nil).Insert), ctx, conn, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockBaseTasksRepository)(nil).Insert), ctx, conn, input)
 }

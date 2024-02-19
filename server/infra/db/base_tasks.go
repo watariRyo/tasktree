@@ -12,15 +12,15 @@ import (
 	"github.com/watariRyo/tasktree/server/infra/db/models"
 )
 
-type BaseTaskRepository struct{}
+type BaseTasksRepository struct{}
 
-var _ repository.BaseTaskRepository = (*BaseTaskRepository)(nil)
+var _ repository.BaseTasksRepository = (*BaseTasksRepository)(nil)
 
-func NewBaseTaskRepository() *BaseTaskRepository {
-	return &BaseTaskRepository{}
+func NewBaseTasksRepository() *BaseTasksRepository {
+	return &BaseTasksRepository{}
 }
 
-func (r *BaseTaskRepository) toDomain(input models.BaseTask) *model.BaseTask {
+func (r *BaseTasksRepository) toDomain(input *models.BaseTask) *model.BaseTask {
 	return &model.BaseTask{
 		ID:        input.ID,
 		UserID:    input.UserID,
@@ -30,12 +30,19 @@ func (r *BaseTaskRepository) toDomain(input models.BaseTask) *model.BaseTask {
 	}
 }
 
-func (r *BaseTaskRepository) GetBaseTaskByUserID(ctx context.Context, conn repository.DBConnection, userID string) (*model.BaseTask, error) {
-	return nil, nil
+func (r *BaseTasksRepository) GetBaseTaskByUserID(ctx context.Context, conn repository.DBConnection, userID int) (*model.BaseTask, error) {
+	baseTask, err := models.BaseTasks(
+		models.BaseTaskWhere.UserID.EQ(userID),
+	).One(ctx, conn)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("Something went wrong when getting baseTask by userID. userID=%d", userID))
+	}
+
+	return r.toDomain(baseTask), nil
 }
 
-func (r *BaseTaskRepository) Insert(ctx context.Context, conn repository.DBConnection, baseTask *model.BaseTask) (*model.BaseTask, error) {
-	bt := models.BaseTask{
+func (r *BaseTasksRepository) Insert(ctx context.Context, conn repository.DBConnection, baseTask *model.BaseTask) (*model.BaseTask, error) {
+	bt := &models.BaseTask{
 		UserID:      baseTask.UserID,
 		Title:       null.StringFrom(*baseTask.Title),
 		Content:     null.StringFrom(*baseTask.Content),

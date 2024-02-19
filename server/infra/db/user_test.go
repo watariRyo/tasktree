@@ -8,25 +8,25 @@ import (
 	"github.com/watariRyo/tasktree/server/domain/repository"
 )
 
-type BaseTasksRepositoryTestSuite struct {
+type UsersRepositoryTestSuite struct {
 	suite.Suite
-	btr  BaseTasksRepository
+	ur   UsersRepository
 	conn repository.DBConnection
 	ctx  context.Context
 }
 
-func (s *BaseTasksRepositoryTestSuite) SetupSuite() {
+func (s *UsersRepositoryTestSuite) SetupSuite() {
 	s.conn = testConnection(s.T())
 	s.ctx = context.Background()
-	s.btr = BaseTasksRepository{}
+	s.ur = UsersRepository{}
 }
 
-func (s *BaseTasksRepositoryTestSuite) TearDownTest() {
+func (s *UsersRepositoryTestSuite) TearDownTest() {
 	truncateTables(s.T())
 }
 
-func TestSuiteBaseTasksRepository(t *testing.T) {
-	suite.Run(t, new(BaseTasksRepositoryTestSuite))
+func TestSuiteUsersRepository(t *testing.T) {
+	suite.Run(t, new(UsersRepositoryTestSuite))
 }
 
 // func (s *BaseTaskRepositoryTestSuite) Test_BaseTaskRepositoryTestSuite_GetBaseTaskByUserID() {
