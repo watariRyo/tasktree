@@ -11,7 +11,7 @@ func (u *UseCaseImpl) GetBaseTask(ctx context.Context, ssid string) (*model.Base
 	if err != nil {
 		return nil, err
 	}
-	baseTask, err := u.repo.BaseTaskRepository.GetBaseTaskByUserID(ctx, u.repo.DBConnection, sessionData.UserID)
+	baseTask, err := u.repo.BaseTasksRepository.GetBaseTaskByUserID(ctx, u.repo.DBConnection, sessionData.UserID)
 	if err != nil {
 		return nil, err
 	}
